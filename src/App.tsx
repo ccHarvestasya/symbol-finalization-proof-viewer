@@ -3,6 +3,8 @@ import './App.css'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import { StatisticsService } from './StatisticsService'
+import { AccountInfo } from './types/Account'
+import { FinalizationProofEpoch } from './types/FinalizationProofEpoch'
 
 type VotingNodeInfoData = {
   host: string
@@ -59,22 +61,27 @@ function App() {
 
   useEffect(() => {
     const retchData = async () => {
+      // Rest用APIノード取得
       const ss = new StatisticsService('testnet')
       await ss.init()
       const selectedNode = await ss.fetchOne()
 
+      // ファイナライゼーションプルーフ取得
       const restUrl = selectedNode.url
       const epoch = selectedNode.chainInfo.latestFinalizedBlock.finalizationEpoch
       const finalizationProofResponse = await fetch(`${restUrl}/finalization/proof/epoch/${epoch}`)
-      const finalizationProof = await finalizationProofResponse.json()
+      const finalizationProof: FinalizationProofEpoch = await finalizationProofResponse.json()
 
+      // Votingノード情報取得
       const votingNodes = ss.getVotingNodes()
 
       const votingNodeInfoDatas: VotingNodeInfoData[] = []
       for (const node of votingNodes) {
+        // アカウント情報取得
         const accountInfoResponse = await fetch(`${restUrl}/accounts/${node.publicKey}`)
-        const accountInfo = await accountInfoResponse.json()
+        const accountInfo: AccountInfo = await accountInfoResponse.json()
 
+        // Stateにセットするデータ作成
         const votingNodeInfoData: VotingNodeInfoData = {
           host: node.host,
           publicKey: node.publicKey,
@@ -83,6 +90,7 @@ function App() {
           signatures: [],
         }
 
+        // ファイナライゼーションプルーフの署名取得
         const votingPublicKeys = accountInfo.account.supplementalPublicKeys?.voting?.publicKeys
         if (votingPublicKeys) {
           for (const votingPublicKey of votingPublicKeys) {
@@ -92,22 +100,18 @@ function App() {
               endEpoch: votingPublicKey.endEpoch,
             })
 
-            const stage1 = finalizationProof.messageGroups[0].signatures.find(
-              (val: { root: { parentPublicKey: string } }) => {
-                return val.root.parentPublicKey === votingPublicKey.publicKey
-              }
-            )
+            const stage1 = finalizationProof.messageGroups[0].signatures.find((val) => {
+              return val.root.parentPublicKey === votingPublicKey.publicKey
+            })
             if (stage1) {
               votingNodeInfoData.signatures!.push({
                 height: finalizationProof.messageGroups[0].height,
                 signature: stage1.root.signature,
               })
             }
-            const stage0 = finalizationProof.messageGroups[1].signatures.find(
-              (val: { root: { parentPublicKey: string } }) => {
-                return val.root.parentPublicKey === votingPublicKey.publicKey
-              }
-            )
+            const stage0 = finalizationProof.messageGroups[1].signatures.find((val) => {
+              return val.root.parentPublicKey === votingPublicKey.publicKey
+            })
             if (stage0) {
               votingNodeInfoData.signatures!.push({
                 height: finalizationProof.messageGroups[1].height,
