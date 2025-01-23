@@ -5,6 +5,7 @@ import viteLogo from './assets/vite.svg'
 import { StatisticsService } from './StatisticsService'
 import { AccountInfo } from './types/Account'
 import { FinalizationProofEpoch } from './types/FinalizationProofEpoch'
+import { hexToBase32 } from './utils/hexToBase32'
 
 type VotingNodeInfoData = {
   host: string
@@ -27,38 +28,6 @@ function App() {
   const [finalizationEpoch, setFinalizationEpoch] = useState('')
   const [votingNodeInfos, setVotingNodeInfos] = useState<VotingNodeInfoData[]>([])
 
-  const hexToBase32 = (unresolvedAddress: string) => {
-    // hex to bytes
-    const bytesArray = []
-    for (let i = 0; i < unresolvedAddress.length; i += 2) {
-      bytesArray.push(parseInt(unresolvedAddress.slice(i, i + 2), 16))
-    }
-    const uint8Array = new Uint8Array(bytesArray)
-
-    // base32 encode
-    const base32Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'
-
-    let bits = 0
-    let value = 0
-    let base32 = ''
-
-    for (let i = 0; i < uint8Array.length; i++) {
-      value = (value << 8) | uint8Array[i]
-      bits += 8
-
-      while (bits >= 5) {
-        base32 += base32Chars[(value >>> (bits - 5)) & 0x1f]
-        bits -= 5
-      }
-    }
-
-    if (bits > 0) {
-      base32 += base32Chars[(value << (5 - bits)) & 0x1f]
-    }
-
-    return base32
-  }
-
   useEffect(() => {
     const retchData = async () => {
       // Rest用APIノード取得
@@ -75,11 +44,26 @@ function App() {
       // Votingノード情報取得
       const votingNodes = ss.getVotingNodes()
 
+      // アカウント情報取得
+      const accountPublicKeys = votingNodes.map((val) => val.publicKey)
+      const accountInfoResponse = await fetch(`${restUrl}/accounts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: `{"publicKeys":${JSON.stringify(accountPublicKeys)}}`,
+      })
+      const accountInfos: AccountInfo[] = await accountInfoResponse.json()
+
       const votingNodeInfoDatas: VotingNodeInfoData[] = []
       for (const node of votingNodes) {
-        // アカウント情報取得
-        const accountInfoResponse = await fetch(`${restUrl}/accounts/${node.publicKey}`)
-        const accountInfo: AccountInfo = await accountInfoResponse.json()
+        // // アカウント情報取得
+        const accountInfo: AccountInfo | undefined = accountInfos.find(
+          (val) => val.account.publicKey === node.publicKey
+        )
+        if (!accountInfo) {
+          continue
+        }
 
         // Stateにセットするデータ作成
         const votingNodeInfoData: VotingNodeInfoData = {
