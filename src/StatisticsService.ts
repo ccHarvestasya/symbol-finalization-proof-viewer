@@ -78,7 +78,7 @@ export class StatisticsService {
     const fetchPromises = []
     for (let i = randomIndex; i < randomIndex + this.MAX_RANDOM_VAL; i++) {
       const restUrl = this.apiNodesCache[i].apiStatus?.restGatewayUrl
-      console.log(`${restUrl}/chain/info`)
+      console.debug(`${restUrl}/chain/info`)
       fetchPromises.push(fetch(`${restUrl}/chain/info`))
     }
 
