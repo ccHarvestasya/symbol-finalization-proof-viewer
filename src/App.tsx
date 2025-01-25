@@ -301,9 +301,11 @@ function App() {
               >
                 {finalizationPoint}
                 <LinearProgress
-                  variant="determinate"
+                  variant="buffer"
                   color="info"
                   value={finalizationEpochProgress}
+                  valueBuffer={67}
+                  style={{ backgroundColor: 'rgb(19 43 55)' }}
                 />
               </Typography>
             </Grid2>
