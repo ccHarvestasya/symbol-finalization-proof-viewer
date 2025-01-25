@@ -7,10 +7,12 @@ export const seachAccountsByPublicKeysFromRest = async (
   publicKeys: string[],
   restUrl: string
 ): Promise<AccountInfo[]> => {
-  console.debug('rest url:', restUrl)
   console.debug('request publicKeys count:', publicKeys.length)
 
-  const accountInfoResponse = await fetch(`${restUrl}/accounts`, {
+  const accountsUrl = `${restUrl}/accounts`
+  console.debug('accounts url:', accountsUrl)
+
+  const accountInfoResponse = await fetch(accountsUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

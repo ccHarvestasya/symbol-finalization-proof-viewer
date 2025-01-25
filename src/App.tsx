@@ -84,6 +84,8 @@ function App() {
 
   useEffect(() => {
     const retchData = async () => {
+      console.info('network type:', NETWORK_TYPE)
+
       // Rest用APIノード取得
       const ss = new StatisticsService(NETWORK_TYPE)
       await ss.init()
@@ -92,7 +94,9 @@ function App() {
       // ファイナライゼーションプルーフ取得
       const restUrl = selectedNode.url
       const epoch = selectedNode.chainInfo.latestFinalizedBlock.finalizationEpoch
-      const finalizationProofResponse = await fetch(`${restUrl}/finalization/proof/epoch/${epoch}`)
+      const finalizationProofEpochUrl = `${restUrl}/finalization/proof/epoch/${epoch}`
+      console.debug('finalization proof epoch url:', finalizationProofEpochUrl)
+      const finalizationProofResponse = await fetch(finalizationProofEpochUrl)
       const finalizationProof: FinalizationProofEpoch = await finalizationProofResponse.json()
 
       // ファイナライゼーションプルーフステージブロック高

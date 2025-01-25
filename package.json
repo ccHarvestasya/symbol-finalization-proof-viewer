@@ -1,7 +1,7 @@
 {
   "name": "symbol-finalization-proof-viewer",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -14,7 +14,6 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@mui/icons-material": "^6.4.1",
     "@mui/material": "^6.4.1",
     "buffer": "^6.0.3",
     "openapi-fetch": "^0.13.4",
