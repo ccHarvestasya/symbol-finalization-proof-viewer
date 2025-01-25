@@ -67,6 +67,24 @@ const judgmentVotingKey = (currentEpoch: number, startEpoch: number, endEpoch: n
   return 'Current'
 }
 
+const GridItem = (props: { title: string; value: string }) => {
+  return (
+    <>
+      <Typography component="div" sx={{ color: 'text.secondary', fontSize: 14 }}>
+        {props.title}
+      </Typography>
+      <Typography
+        variant="body1"
+        component="div"
+        gutterBottom
+        style={{ whiteSpace: 'nowrap', overflowX: 'hidden', textOverflow: 'ellipsis' }}
+      >
+        {props.value}
+      </Typography>
+    </>
+  )
+}
+
 function App() {
   const [connectedNode, setConnectedNode] = useState('Connecting...')
   const [height, setHeight] = useState('0')
@@ -251,77 +269,19 @@ function App() {
 
           <Grid2 container spacing={0.5}>
             <Grid2 size={{ xs: 12, sm: 12, md: 12 }}>
-              <Typography component="div" sx={{ color: 'text.secondary', fontSize: 14 }}>
-                Connected Node
-              </Typography>
-              <Typography
-                variant="body1"
-                component="div"
-                gutterBottom
-                style={{ whiteSpace: 'nowrap', overflowX: 'hidden', textOverflow: 'ellipsis' }}
-              >
-                {connectedNode}
-              </Typography>
+              <GridItem title="Connected Node" value={connectedNode} />
             </Grid2>
 
             <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
-              <Typography component="div" sx={{ color: 'text.secondary', fontSize: 14 }}>
-                Block Height
-              </Typography>
-              <Typography
-                variant="body1"
-                component="div"
-                gutterBottom
-                style={{
-                  marginRight: '10px',
-                  textAlign: 'right',
-                  whiteSpace: 'nowrap',
-                  overflowX: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                {height}
-              </Typography>
+              <GridItem title="Block Height" value={height} />
             </Grid2>
 
             <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
-              <Typography component="div" sx={{ color: 'text.secondary', fontSize: 14 }}>
-                Finalized Height
-              </Typography>
-              <Typography
-                variant="body1"
-                component="div"
-                gutterBottom
-                style={{
-                  marginRight: '10px',
-                  textAlign: 'right',
-                  whiteSpace: 'nowrap',
-                  overflowX: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                {finalizedHeight}
-              </Typography>
+              <GridItem title="Finalized Height" value={finalizedHeight} />
             </Grid2>
 
             <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
-              <Typography component="div" sx={{ color: 'text.secondary', fontSize: 14 }}>
-                Finalization Epoch
-              </Typography>
-              <Typography
-                variant="body1"
-                component="div"
-                gutterBottom
-                style={{
-                  marginRight: '10px',
-                  textAlign: 'right',
-                  whiteSpace: 'nowrap',
-                  overflowX: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                {finalizationEpoch}
-              </Typography>
+              <GridItem title="Finalized Epoch" value={finalizationEpoch} />
             </Grid2>
 
             <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
@@ -370,64 +330,19 @@ function App() {
 
             <Grid2 container spacing={0.5}>
               <Grid2 size={{ xs: 12, sm: 12, md: 12 }}>
-                <Typography component="div" sx={{ color: 'text.secondary', fontSize: 14 }}>
-                  Host
-                </Typography>
-                <Typography
-                  variant="body1"
-                  component="div"
-                  gutterBottom
-                  style={{ whiteSpace: 'nowrap', overflowX: 'hidden', textOverflow: 'ellipsis' }}
-                >
-                  {votingNodeInfo.host}
-                </Typography>
+                <GridItem title="Host" value={votingNodeInfo.host} />
               </Grid2>
 
               <Grid2 size={{ xs: 12, sm: 12, md: 12 }}>
-                <Typography component="div" sx={{ color: 'text.secondary', fontSize: 14 }}>
-                  PublicKey
-                </Typography>
-                <Typography
-                  variant="body1"
-                  component="div"
-                  gutterBottom
-                  style={{ whiteSpace: 'nowrap', overflowX: 'hidden', textOverflow: 'ellipsis' }}
-                >
-                  {votingNodeInfo.publicKey}
-                </Typography>
+                <GridItem title="PublicKey" value={votingNodeInfo.publicKey} />
               </Grid2>
 
               <Grid2 size={{ xs: 12, sm: 7, md: 9 }}>
-                <Typography component="div" sx={{ color: 'text.secondary', fontSize: 14 }}>
-                  Address
-                </Typography>
-                <Typography
-                  variant="body1"
-                  component="div"
-                  gutterBottom
-                  style={{ whiteSpace: 'nowrap', overflowX: 'hidden', textOverflow: 'ellipsis' }}
-                >
-                  {votingNodeInfo.address}
-                </Typography>
+                <GridItem title="Address" value={votingNodeInfo.address} />
               </Grid2>
 
               <Grid2 size={{ xs: 12, sm: 5, md: 3 }}>
-                <Typography component="div" sx={{ color: 'text.secondary', fontSize: 14 }}>
-                  Amount
-                </Typography>
-                <Typography
-                  variant="body1"
-                  component="div"
-                  gutterBottom
-                  style={{
-                    textAlign: 'right',
-                    whiteSpace: 'nowrap',
-                    overflowX: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}
-                >
-                  {votingNodeInfo.amount}
-                </Typography>
+                <GridItem title="Amount" value={votingNodeInfo.amount} />
               </Grid2>
 
               <Grid2 size={{ xs: 12, sm: 12, md: 12 }}>
@@ -462,24 +377,7 @@ function App() {
 
                           <Grid2 container spacing={0.5}>
                             <Grid2 size={{ xs: 12, sm: 12, md: 12 }}>
-                              <Typography
-                                component="div"
-                                sx={{ color: 'text.secondary', fontSize: 14 }}
-                              >
-                                Voting PublicKey
-                              </Typography>
-                              <Typography
-                                variant="body1"
-                                component="div"
-                                gutterBottom
-                                style={{
-                                  whiteSpace: 'nowrap',
-                                  overflowX: 'hidden',
-                                  textOverflow: 'ellipsis',
-                                }}
-                              >
-                                {val.votingPublicKey}
-                              </Typography>
+                              <GridItem title="Voting PublicKey" value={val.votingPublicKey!} />
                               <Grid2 size={{ xs: 12, sm: 12, md: 12 }}>
                                 <Typography
                                   component="div"
@@ -511,45 +409,17 @@ function App() {
                             {index === 0 ? (
                               <>
                                 <Grid2 size={{ xs: 12, sm: 6, md: 6 }}>
-                                  <Typography
-                                    component="div"
-                                    sx={{ color: 'text.secondary', fontSize: 14 }}
-                                  >
-                                    Stage0 Bottom Signature (Height: {stage0Height})
-                                  </Typography>
-                                  <Typography
-                                    variant="body1"
-                                    component="div"
-                                    gutterBottom
-                                    style={{
-                                      whiteSpace: 'nowrap',
-                                      overflowX: 'hidden',
-                                      textOverflow: 'ellipsis',
-                                    }}
-                                  >
-                                    {val.stage0Signature}
-                                  </Typography>
+                                  <GridItem
+                                    title={`Stage0 Bottom Signature (Height: ${stage0Height})`}
+                                    value={val.stage0Signature!}
+                                  />
                                 </Grid2>
 
                                 <Grid2 size={{ xs: 12, sm: 6, md: 6 }}>
-                                  <Typography
-                                    component="div"
-                                    sx={{ color: 'text.secondary', fontSize: 14 }}
-                                  >
-                                    Stage1 Bottom Signature (Height: {stage1Height})
-                                  </Typography>
-                                  <Typography
-                                    variant="body1"
-                                    component="div"
-                                    gutterBottom
-                                    style={{
-                                      whiteSpace: 'nowrap',
-                                      overflowX: 'hidden',
-                                      textOverflow: 'ellipsis',
-                                    }}
-                                  >
-                                    {val.stage1Signature}
-                                  </Typography>
+                                  <GridItem
+                                    title={`Stage1 Bottom Signature (Height: ${stage1Height})`}
+                                    value={val.stage1Signature!}
+                                  />
                                 </Grid2>
                               </>
                             ) : (
