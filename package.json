@@ -10,7 +10,8 @@
     "generate:api": "openapi-typescript openapi/openapi.yml --output src/schema.ts",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
     "preview": "vite preview",
-    "metal:forge:test": "cd ../metal && npx metal forge ../symbol-finalization-proof-viewer/dist/index.html --node-url https://sakia.harvestasya.com:3001 --seal 2"
+    "metal:forge:test": "yarn build && cd ../metal && npx metal forge -o ../symbol-finalization-proof-viewer/metalForgeInfo.json --node-url http://sakia.harvestasya.com:3000 --seal 2 ../symbol-finalization-proof-viewer/dist/index.html",
+    "metal:scrap:test": "cd ../metal && npx metal scrap -o ../symbol-finalization-proof-viewer/metalScrapInfo.json --node-url http://sakia.harvestasya.com:3000"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
