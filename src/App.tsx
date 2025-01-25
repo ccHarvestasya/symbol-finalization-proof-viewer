@@ -104,7 +104,13 @@ function App() {
       const stage1Height = finalizationProof.messageGroups[0].height
 
       // Votingノード情報取得
-      const votingNodes = ss.getVotingNodes()
+      let votingNodes = ss.getVotingNodes()
+      // フィルタ
+      if (urlFilter) {
+        votingNodes = votingNodes.filter((val) => {
+          return val.host.includes(urlFilter) || val.publicKey.includes(urlFilter)
+        })
+      }
 
       // アカウント情報取得
       const accountPublicKeys = votingNodes.map((val) => val.publicKey)
@@ -116,6 +122,7 @@ function App() {
       }
 
       const votingNodeInfoDatas: VotingNodeInfoData[] = []
+
       for (const node of votingNodes) {
         // Stateにセットするデータ作成
         const votingNodeInfoData: VotingNodeInfoData = {
@@ -213,16 +220,6 @@ function App() {
         return parseInt(b.amount) - parseInt(a.amount)
       })
 
-      // フィルタ
-      if (urlFilter) {
-        const filterData = votingNodeInfoDatas.filter((val) => {
-          return val.host.includes(urlFilter) || val.publicKey.includes(urlFilter)
-        })
-        setVotingNodeInfos(filterData)
-      } else {
-        setVotingNodeInfos(votingNodeInfoDatas)
-      }
-
       // Stateにセット
       setConnectedNode(selectedNode.url)
       setHeight(formatStringNumber(selectedNode.chainInfo.height))
@@ -232,6 +229,7 @@ function App() {
       )
       const finalizationPoint = selectedNode.chainInfo.latestFinalizedBlock.finalizationPoint
       const finalizationEpochProgress = (finalizationPoint / 48) * 100
+      setVotingNodeInfos(votingNodeInfoDatas)
       setFinalizationPoint(finalizationPoint.toString() + ' / 48')
       setFinalizationEpochProgress(finalizationEpochProgress)
       setStage0Height(formatStringNumber(stage0Height))
