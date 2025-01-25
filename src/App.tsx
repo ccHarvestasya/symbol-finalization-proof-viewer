@@ -80,7 +80,7 @@ function App() {
 
   // URLからパラメータを取得
   const urlParams = new URLSearchParams(window.location.search)
-  const urlFilter = urlParams.get('filter') // 'paramName'を取得したいパラメータ名に置き換えてください
+  const urlFilter = urlParams.get('filter')
 
   useEffect(() => {
     const retchData = async () => {
