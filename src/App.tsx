@@ -89,7 +89,7 @@ function App() {
   const [connectedNode, setConnectedNode] = useState('Connecting...')
   const [height, setHeight] = useState('0')
   const [finalizedHeight, setFinalizedHeight] = useState('0')
-  const [finalizationPoint, setFinalizationPoint] = useState('0 / 48')
+  const [finalizationPoint, setFinalizationPoint] = useState('0')
   const [finalizationEpoch, setFinalizationEpoch] = useState('0')
   const [finalizationEpochProgress, setFinalizationEpochProgress] = useState(0)
   const [votingNodeInfos, setVotingNodeInfos] = useState<VotingNodeInfoData[]>([])
@@ -246,9 +246,9 @@ function App() {
         formatStringNumber(selectedNode.chainInfo.latestFinalizedBlock.finalizationEpoch.toString())
       )
       const finalizationPoint = selectedNode.chainInfo.latestFinalizedBlock.finalizationPoint
-      const finalizationEpochProgress = (finalizationPoint / 48) * 100
+      const finalizationEpochProgress = (finalizationPoint / 72) * 100
       setVotingNodeInfos(votingNodeInfoDatas)
-      setFinalizationPoint(finalizationPoint.toString() + ' / 48')
+      setFinalizationPoint(finalizationPoint.toString())
       setFinalizationEpochProgress(finalizationEpochProgress)
       setStage0Height(formatStringNumber(stage0Height))
       setStage1Height(formatStringNumber(stage1Height))
