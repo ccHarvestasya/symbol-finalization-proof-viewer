@@ -6,7 +6,7 @@ Displays the expiration date and voting status of each node's Voting Key.
 
 ![Symbol Finalization Proof](https://sakia.harvestasya.com:3001/metadata/metal/Fe2UcYgkkeYbTxnTVBcox8mLjdbV12WTzbEfKQyCiZg8ir)
 
-## 使い方
+## Usage
 
 Since it is stored on Symbol Testnet, you can refer to it from the following URLs.
 
